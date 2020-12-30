@@ -4,8 +4,8 @@ title: About Me
 permalink: /about/
 ---
 
-This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
+I am a Data Scientist at [Pearson](https://www.pearson.com/uk/). Check out my [LinkedIn profile](https://www.linkedin.com/in/suja-venkataramani). 
 
 
 
-[^1]:a blogging platform that natively supports Jupyter notebooks in addition to other formats.
+
