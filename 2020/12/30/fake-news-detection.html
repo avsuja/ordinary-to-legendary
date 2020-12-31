@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Title | Ordinary to Legendary</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Title" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Data science projects with Jupiter notebooks and blogs - gaining confidence by building and writing." />
+<meta property="og:description" content="Data science projects with Jupiter notebooks and blogs - gaining confidence by building and writing." />
+<link rel="canonical" href="https://avsuja.github.io/ordinary-to-legendary/2020/12/30/fake-news-detection.html" />
+<meta property="og:url" content="https://avsuja.github.io/ordinary-to-legendary/2020/12/30/fake-news-detection.html" />
+<meta property="og:site_name" content="Ordinary to Legendary" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-30T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://avsuja.github.io/ordinary-to-legendary/2020/12/30/fake-news-detection.html","@type":"BlogPosting","headline":"Title","dateModified":"2020-12-30T00:00:00-06:00","datePublished":"2020-12-30T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://avsuja.github.io/ordinary-to-legendary/2020/12/30/fake-news-detection.html"},"description":"Data science projects with Jupiter notebooks and blogs - gaining confidence by building and writing.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/ordinary-to-legendary/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://avsuja.github.io/ordinary-to-legendary/feed.xml" title="Ordinary to Legendary" /><link rel="shortcut icon" type="image/x-icon" href="/ordinary-to-legendary/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/ordinary-to-legendary/">Ordinary to Legendary</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/ordinary-to-legendary/about/">About Me</a><a class="page-link" href="/ordinary-to-legendary/search/">Search</a><a class="page-link" href="/ordinary-to-legendary/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-12-30T00:00:00-06:00" itemprop="datePublished">
+        Dec 30, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/avsuja/ordinary-to-legendary/tree/master/_notebooks/2020-12-30-fake-news-detection.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/avsuja/ordinary-to-legendary/master?filepath=_notebooks%2F2020-12-30-fake-news-detection.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/avsuja/ordinary-to-legendary/blob/master/_notebooks/2020-12-30-fake-news-detection.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-12-30-fake-news-detection.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Detect-Fake-News---Using-a-variety-of-scikit-learn-classifiers">Detect Fake News - Using a variety of scikit learn classifiers<a class="anchor-link" href="#Detect-Fake-News---Using-a-variety-of-scikit-learn-classifiers"> </a></h2><blockquote><p>Given a news data set, distinquish real news from fake news.</p>
+</blockquote>
+<ul>
+<li>toc:false - badges: true</li>
+<li>comments: false</li>
+<li>categories: [jupyter, sklearn, tfidfvectorizer, passiveaggresiveclassifier, logisticregressionclassifier, supportvectorclassifier, naivebayesclassifier, decisiontreeclassifier, randomforestclassifier, mlpclassifier]</li>
+<li>author: Venkataramani, Suja</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Data-Source:-Here">Data Source: <a href="https://drive.google.com/file/d/1er9NJTLUA3qnRuyhfzuN0XUsoIC4a-_q/view">Here</a><a class="anchor-link" href="#Data-Source:-Here"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">PassiveAggressiveClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">MultinomialNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">news_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;.</span><span class="se">\\</span><span class="s2">data</span><span class="se">\\</span><span class="s2">news.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">news_data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(6335, 4)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">news_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>title</th>
+      <th>text</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>8476</td>
+      <td>You Can Smell Hillary’s Fear</td>
+      <td>Daniel Greenfield, a Shillman Journalism Fello...</td>
+      <td>FAKE</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10294</td>
+      <td>Watch The Exact Moment Paul Ryan Committed Pol...</td>
+      <td>Google Pinterest Digg Linkedin Reddit Stumbleu...</td>
+      <td>FAKE</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3608</td>
+      <td>Kerry to go to Paris in gesture of sympathy</td>
+      <td>U.S. Secretary of State John F. Kerry said Mon...</td>
+      <td>REAL</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>10142</td>
+      <td>Bernie supporters on Twitter erupt in anger ag...</td>
+      <td>— Kaydee King (@KaydeeKing) November 9, 2016 T...</td>
+      <td>FAKE</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>875</td>
+      <td>The Battle of New York: Why This Primary Matters</td>
+      <td>It's primary day in New York and front-runners...</td>
+      <td>REAL</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">news_data</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">news_data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="TF-IDF---What-is-the-intuition-behind-it?">TF-IDF - What is the intuition behind it?<a class="anchor-link" href="#TF-IDF---What-is-the-intuition-behind-it?"> </a></h3><p>The aim is to convert a document of words into a vector of numbers so it can be fed to ML algorithms. For every word in every document tf-idf is calculated to show the importance of the word in the corpus and the document.</p>
+<p>t = term, d = document, N = number of documents in the corpus</p>
+<ul>
+<li><p>Term Frequency: Calculate the frequency of a word in a document.
+tf (t, d) = count of the word in the document / total number of words in the document</p>
+</li>
+<li><p>Document Frequency: Calculate the the number of documents in which the term occurs.
+df(t) = count of the documents in which term occurs.</p>
+</li>
+<li><p>Inverse Document Frequency: Measures the importance of the word in the corpus, relative weight of the term.
+idf(t) = N/ df(t) - When the corpus is large, the number can be large.
+idf(t) = log (N/df(t) + 1) - Taking a log dampens this large value, +1 in the denominator is to avoid division by 0.</p>
+</li>
+<li><p>Term Frequency-Inverse Document Frequency:
+tf-idf(t, d) = tf(t, d) * idf(t)</p>
+</li>
+</ul>
+<p><a href="https://monkeylearn.com/blog/what-is-tf-idf/#:~:text=TF%2DIDF%20is%20a%20statistical,across%20a%20set%20of%20documents">https://monkeylearn.com/blog/what-is-tf-idf/#:~:text=TF%2DIDF%20is%20a%20statistical,across%20a%20set%20of%20documents</a>.</p>
+<p><a href="https://towardsdatascience.com/tf-idf-for-document-ranking-from-scratch-in-python-on-real-world-dataset-796d339a4089">https://towardsdatascience.com/tf-idf-for-document-ranking-from-scratch-in-python-on-real-world-dataset-796d339a4089</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># stop_words = &#39;english&#39;: Removes all common uninformative words like and, the, etc.</span>
+<span class="c1"># max_df = 0.7 : Removes corpus-specific stop words when the document frequecy is above 0.7. </span>
+<span class="n">tf_idf_vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">stop_words</span> <span class="o">=</span> <span class="s1">&#39;english&#39;</span><span class="p">,</span> <span class="n">max_df</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># fit_transform - Learns the terms and returns a document-term sparce matrix (n_samples, n_features)</span>
+<span class="n">tf_idf_x_train</span> <span class="o">=</span> <span class="n">tf_idf_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+
+<span class="c1"># transform - Returns a document-term sparce matrix (n_samples, n_features)</span>
+<span class="n">tf_idf_x_test</span> <span class="o">=</span> <span class="n">tf_idf_vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="1.-Passive-Aggressive-Classifier---What-is-it?">1. Passive Aggressive Classifier - What is it?<a class="anchor-link" href="#1.-Passive-Aggressive-Classifier---What-is-it?"> </a></h3><p>PAC is a streaming algorithm for classifying massive amounts of data. Data is fed to the algorithm in sequestial order. For every example, if the prediction is correct, no change is made to the model (passive), but if the the prediction is incorrect, the model weight is changed to correct the model. The example is thrown away after processing.</p>
+<p>This works on the principle of Hinge loss, where if the prediction is correct or overly correct, there is no loss, but if the change is incorrect then there is a loss, bigger the difference, bigger the loss.</p>
+<p>The loss is added to the weight vector such that the prediction is just equal to 1.</p>
+<p><a href="https://www.geeksforgeeks.org/passive-aggressive-classifiers/">https://www.geeksforgeeks.org/passive-aggressive-classifiers/</a></p>
+<p><a href="https://www.youtube.com/watch?v=TJU8NfDdqNQ">https://www.youtube.com/watch?v=TJU8NfDdqNQ</a></p>
+<p><a href="https://www.machinecurve.com/index.php/2019/10/15/how-to-use-hinge-squared-hinge-loss-with-keras/">https://www.machinecurve.com/index.php/2019/10/15/how-to-use-hinge-squared-hinge-loss-with-keras/</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pac</span> <span class="o">=</span> <span class="n">PassiveAggressiveClassifier</span><span class="p">(</span><span class="n">max_iter</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">pac</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf_idf_x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predict on the test set.</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">pac</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf_idf_x_test</span><span class="p">)</span>
+
+<span class="c1"># Calculate the accuracy.</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PAC Accuracy = &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>PAC Accuracy =  93.291
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="2.-Logistic-regression">2. Logistic regression<a class="anchor-link" href="#2.-Logistic-regression"> </a></h3><p>Logistic regression is like linear regression but with binomial results. It predicts the probability of the class using a sigmoid function.</p>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html</a></p>
+<p><a href="https://www.youtube.com/watch?v=yIYKR4sgzI8">https://www.youtube.com/watch?v=yIYKR4sgzI8</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf_idf_x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf_idf_x_test</span><span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LR Accuracy = &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>LR Accuracy =  90.845
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3.-Support-Vector-Machine">3. Support Vector Machine<a class="anchor-link" href="#3.-Support-Vector-Machine"> </a></h3><p>SVM is a supervised ML model which can be used for classification. It does this by finding the best line/plane of separation between the nearest data points from each class. If the classes are not linearly separable in the given dimensions, new dimension is calculated using a kernel function and then a hyperplane is calculated.</p>
+<p><a href="https://monkeylearn.com/blog/introduction-to-support-vector-machines-svm/#:~:text=A%20support%20vector%20machine%20(SVM,on%20a%20text%20classification%20problem">https://monkeylearn.com/blog/introduction-to-support-vector-machines-svm/#:~:text=A%20support%20vector%20machine%20(SVM,on%20a%20text%20classification%20problem</a>.</p>
+<p><a href="https://www.youtube.com/watch?v=efR1C6CvhmE">https://www.youtube.com/watch?v=efR1C6CvhmE</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">svc</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+<span class="n">svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf_idf_x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">svc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf_idf_x_test</span><span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SVC Accuracy = &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>LR Accuracy =  50.039
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="4.-Naive-Bayes-Classifier">4. Naive Bayes Classifier<a class="anchor-link" href="#4.-Naive-Bayes-Classifier"> </a></h3><p>NB is a probabilistic ML model based on Bayes theorem:</p>
+<p>P(y|X) =  (P(X|y)p(y))/(P(X))</p>
+<p>Where X = x1, x2...xn (n features), y = expected result.
+All the predictors are expected to be unrelated (naive assumption) and are considered equally important.</p>
+<p><a href="https://towardsdatascience.com/naive-bayes-classifier-81d512f50a7c">https://towardsdatascience.com/naive-bayes-classifier-81d512f50a7c</a></p>
+<p><a href="https://www.youtube.com/watch?v=O2L2Uv9pdDA">https://www.youtube.com/watch?v=O2L2Uv9pdDA</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mnb</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">()</span>
+<span class="n">mnb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf_idf_x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">mnb</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf_idf_x_test</span><span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MNB Accuracy = &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>MNB Accuracy =  85.556
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="5.-Decision-Tree-Classifier">5. Decision Tree Classifier<a class="anchor-link" href="#5.-Decision-Tree-Classifier"> </a></h3><p>DT is a non-parametric (data does not have well defined distribution) supervised model. This model creates a tree with the given data. When new data is presented, it follows the decision tree to arrive at a class.</p>
+<p><a href="https://www.youtube.com/watch?v=7VeUPuFGJHk">https://www.youtube.com/watch?v=7VeUPuFGJHk</a></p>
+<p><a href="https://scikit-learn.org/stable/modules/tree.html">https://scikit-learn.org/stable/modules/tree.html</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dtc</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">dtc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf_idf_x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">dtc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf_idf_x_test</span><span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DTC Accuracy = &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>GNB Accuracy =  80.9
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="6.-Random-Forest-Classifier">6. Random Forest Classifier<a class="anchor-link" href="#6.-Random-Forest-Classifier"> </a></h3><p>This is a ensemble () classifier where several sub-samples of the data (bootstrapping - random sampling of data with replacement) is used to build decision tree classifiers and the result is calculated based on the average of the results from the different trees.</p>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#">https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#</a></p>
+<p><a href="https://www.youtube.com/watch?v=J4Wdy0Wc_xQ">https://www.youtube.com/watch?v=J4Wdy0Wc_xQ</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rfc</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">rfc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf_idf_x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">rfc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf_idf_x_test</span><span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RFC Accuracy = &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>GNB Accuracy =  85.162
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="7.-Multilayer-Perceptron-Classifier">7. Multilayer Perceptron Classifier<a class="anchor-link" href="#7.-Multilayer-Perceptron-Classifier"> </a></h3><p>A neural network model based on perceptrons with hidden layers and back propogation. The hidden layers help learn complex patterns int he data and back propogation adjusts the weights of the classifier after every iteration to minimise loss.</p>
+<p><a href="https://scikit-learn.org/stable/modules/neural_networks_supervised.html">https://scikit-learn.org/stable/modules/neural_networks_supervised.html</a></p>
+<p><a href="https://towardsdatascience.com/multi-layer-neural-networks-with-sigmoid-function-deep-learning-for-rookies-2-bf464f09eb7f">https://towardsdatascience.com/multi-layer-neural-networks-with-sigmoid-function-deep-learning-for-rookies-2-bf464f09eb7f</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mlp</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">mlp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf_idf_x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">mlp</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf_idf_x_test</span><span class="p">)</span>
+
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RFC Accuracy = &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>   
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>RFC Accuracy =  93.212
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><a class="u-url" href="/ordinary-to-legendary/2020/12/30/fake-news-detection.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/ordinary-to-legendary/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/ordinary-to-legendary/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Data science projects with Jupiter notebooks and blogs - gaining confidence by building and writing.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
