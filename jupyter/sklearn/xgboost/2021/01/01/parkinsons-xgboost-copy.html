@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Detect Parkinsons - Using XGBoost Classifier | Ordinary to Legendary</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Detect Parkinsons - Using XGBoost Classifier" />
+<meta name="author" content="Venkataramani, Suja" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using XGBoost to classify Parkinsons disease." />
+<meta property="og:description" content="Using XGBoost to classify Parkinsons disease." />
+<link rel="canonical" href="https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/xgboost/2021/01/01/parkinsons-xgboost-copy.html" />
+<meta property="og:url" content="https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/xgboost/2021/01/01/parkinsons-xgboost-copy.html" />
+<meta property="og:site_name" content="Ordinary to Legendary" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-01T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/xgboost/2021/01/01/parkinsons-xgboost-copy.html","@type":"BlogPosting","headline":"Detect Parkinsons - Using XGBoost Classifier","dateModified":"2021-01-01T00:00:00-06:00","datePublished":"2021-01-01T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/xgboost/2021/01/01/parkinsons-xgboost-copy.html"},"author":{"@type":"Person","name":"Venkataramani, Suja"},"description":"Using XGBoost to classify Parkinsons disease.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/ordinary-to-legendary/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://avsuja.github.io/ordinary-to-legendary/feed.xml" title="Ordinary to Legendary" /><link rel="shortcut icon" type="image/x-icon" href="/ordinary-to-legendary/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/ordinary-to-legendary/">Ordinary to Legendary</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/ordinary-to-legendary/about/">About Me</a><a class="page-link" href="/ordinary-to-legendary/search/">Search</a><a class="page-link" href="/ordinary-to-legendary/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Detect Parkinsons - Using XGBoost Classifier</h1><p class="page-description">Using XGBoost to classify Parkinsons disease.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-01T00:00:00-06:00" itemprop="datePublished">
+        Jan 1, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Venkataramani, Suja</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/ordinary-to-legendary/categories/#jupyter">jupyter</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/ordinary-to-legendary/categories/#sklearn">sklearn</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/ordinary-to-legendary/categories/#xgboost">xgboost</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/avsuja/ordinary-to-legendary/tree/master/_notebooks/2021-01-01-parkinsons-xgboost copy.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/avsuja/ordinary-to-legendary/master?filepath=_notebooks%2F2021-01-01-parkinsons-xgboost+copy.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/avsuja/ordinary-to-legendary/blob/master/_notebooks/2021-01-01-parkinsons-xgboost copy.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-01-parkinsons-xgboost copy.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Overview">Overview<a class="anchor-link" href="#Overview"> </a></h2><p>XGBoost is perfectly suited to large datasets with numerous features with a mixture of categorical and numerical features for non-deep learning problems. While our dataset is quite small, for the purposes of this example, we will use XGBoost.</p>
+<p>XGBoost does not need feature scaling/normalisation as xgboost is a ensemble of decision trees and distance between features are not used in the algorithm (unlike KNN, PCA).</p>
+<p>We begin by splitting the dependent(Y) and independent (X) variables. There are 23 independent variables and "Status" is the label, the dependent variable. Then we split the dataset into training and test set. We fit XGBoost model with the training set and test with the test set.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Method">Method<a class="anchor-link" href="#Method"> </a></h2><p>First, let's download the Parkingsons data set from <a href="https://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/">UCI Machine Learning</a>.</p>
+<p>Install xgboost for Python with "pip install xgboost" at command prompt. Test with python "import xgboost" to make sure all is well.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+<span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="nn">xgb</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pk_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;.</span><span class="se">\\</span><span class="s2">data</span><span class="se">\\</span><span class="s2">parkinsons.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pk_data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(195, 24)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pk_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>MDVP:Fo(Hz)</th>
+      <th>MDVP:Fhi(Hz)</th>
+      <th>MDVP:Flo(Hz)</th>
+      <th>MDVP:Jitter(%)</th>
+      <th>MDVP:Jitter(Abs)</th>
+      <th>MDVP:RAP</th>
+      <th>MDVP:PPQ</th>
+      <th>Jitter:DDP</th>
+      <th>MDVP:Shimmer</th>
+      <th>...</th>
+      <th>Shimmer:DDA</th>
+      <th>NHR</th>
+      <th>HNR</th>
+      <th>status</th>
+      <th>RPDE</th>
+      <th>DFA</th>
+      <th>spread1</th>
+      <th>spread2</th>
+      <th>D2</th>
+      <th>PPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>phon_R01_S01_1</td>
+      <td>119.992</td>
+      <td>157.302</td>
+      <td>74.997</td>
+      <td>0.00784</td>
+      <td>0.00007</td>
+      <td>0.00370</td>
+      <td>0.00554</td>
+      <td>0.01109</td>
+      <td>0.04374</td>
+      <td>...</td>
+      <td>0.06545</td>
+      <td>0.02211</td>
+      <td>21.033</td>
+      <td>1</td>
+      <td>0.414783</td>
+      <td>0.815285</td>
+      <td>-4.813031</td>
+      <td>0.266482</td>
+      <td>2.301442</td>
+      <td>0.284654</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>phon_R01_S01_2</td>
+      <td>122.400</td>
+      <td>148.650</td>
+      <td>113.819</td>
+      <td>0.00968</td>
+      <td>0.00008</td>
+      <td>0.00465</td>
+      <td>0.00696</td>
+      <td>0.01394</td>
+      <td>0.06134</td>
+      <td>...</td>
+      <td>0.09403</td>
+      <td>0.01929</td>
+      <td>19.085</td>
+      <td>1</td>
+      <td>0.458359</td>
+      <td>0.819521</td>
+      <td>-4.075192</td>
+      <td>0.335590</td>
+      <td>2.486855</td>
+      <td>0.368674</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>phon_R01_S01_3</td>
+      <td>116.682</td>
+      <td>131.111</td>
+      <td>111.555</td>
+      <td>0.01050</td>
+      <td>0.00009</td>
+      <td>0.00544</td>
+      <td>0.00781</td>
+      <td>0.01633</td>
+      <td>0.05233</td>
+      <td>...</td>
+      <td>0.08270</td>
+      <td>0.01309</td>
+      <td>20.651</td>
+      <td>1</td>
+      <td>0.429895</td>
+      <td>0.825288</td>
+      <td>-4.443179</td>
+      <td>0.311173</td>
+      <td>2.342259</td>
+      <td>0.332634</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>phon_R01_S01_4</td>
+      <td>116.676</td>
+      <td>137.871</td>
+      <td>111.366</td>
+      <td>0.00997</td>
+      <td>0.00009</td>
+      <td>0.00502</td>
+      <td>0.00698</td>
+      <td>0.01505</td>
+      <td>0.05492</td>
+      <td>...</td>
+      <td>0.08771</td>
+      <td>0.01353</td>
+      <td>20.644</td>
+      <td>1</td>
+      <td>0.434969</td>
+      <td>0.819235</td>
+      <td>-4.117501</td>
+      <td>0.334147</td>
+      <td>2.405554</td>
+      <td>0.368975</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>phon_R01_S01_5</td>
+      <td>116.014</td>
+      <td>141.781</td>
+      <td>110.655</td>
+      <td>0.01284</td>
+      <td>0.00011</td>
+      <td>0.00655</td>
+      <td>0.00908</td>
+      <td>0.01966</td>
+      <td>0.06425</td>
+      <td>...</td>
+      <td>0.10470</td>
+      <td>0.01767</td>
+      <td>19.649</td>
+      <td>1</td>
+      <td>0.417356</td>
+      <td>0.823484</td>
+      <td>-3.747787</td>
+      <td>0.234513</td>
+      <td>2.332180</td>
+      <td>0.410335</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 24 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pk_data.columns != &#39;status&#39; -&gt; Gives an array of bool values, true for all but status. </span>
+<span class="c1"># .values - converts df into array.</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">pk_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">pk_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+<span class="c1"># loc[row_from: row_to, column_from: column_to]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pk_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="XGBoost">XGBoost<a class="anchor-link" href="#XGBoost"> </a></h3><p>XGB is a progression of Decision Trees. When bagging (taking random samples with replacement from the data) is applied to decision trees it results in Random Forest which is a ensemble of decision trees which results in better accuracy. When boosting (when every tree built aims to correct the errors in the previous tree, additive trees) is added to Random Forest, it result in Boosted Random Tree. When the errors are minimised using Gradient Descent, it results in Gradient Boosting.</p>
+<p>XGB added further optimisations to this Gradient Boosted Trees such as parallel processing, tree pruning (to avoid being penalised by regularisation term) along with an efficient missing value imputation and cross-validation. Along with the algorithmic advances the hardware is optimised resulting in significant performance improvements.</p>
+<p><a href="https://xgboost.readthedocs.io/en/latest/tutorials/model.html">XGBoost</a><br />
+<a href="https://towardsdatascience.com/">TowardsDataScience</a><br />
+<a href="https-medium-com-vishalmorde-xgboost-algorithm-long-she-may-rein-edd9f99be63d">Medium</a><br />
+<a href="https://machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/">MachineLearningMastery</a><br />
+<a href="https://www.youtube.com/watch?v=3CC4N4z3GJc">YouTube-GradientBoost</a><br />
+<a href="https://www.youtube.com/watch?v=OtD8wVaFm6E">YouTube-XGBoost</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xgbc</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBClassifier</span><span class="p">()</span>
+<span class="n">xgbc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">xgbc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;XGB Accuracy: &#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">score</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[21:21:19] WARNING: C:/Users/Administrator/workspace/xgboost-win64_release_1.3.0/src/learner.cc:1061: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.
+XGB Accuracy:  94.872
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion"> </a></h2><p>Even though the dataset is not massive, XBBoost performed well with <strong>94%</strong> accuracy.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/ordinary-to-legendary/jupyter/sklearn/xgboost/2021/01/01/parkinsons-xgboost-copy.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/ordinary-to-legendary/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/ordinary-to-legendary/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Data science projects with Jupiter notebooks and blogs - gaining confidence by building and writing.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

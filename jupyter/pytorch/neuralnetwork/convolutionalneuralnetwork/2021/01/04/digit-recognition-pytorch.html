@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Digit Recognition - using NN and CNN (Pytorch) | Ordinary to Legendary</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Digit Recognition - using NN and CNN (Pytorch)" />
+<meta name="author" content="Venkataramani, Suja" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Classify digit images using Neural Network and Convolutional Neural Network." />
+<meta property="og:description" content="Classify digit images using Neural Network and Convolutional Neural Network." />
+<link rel="canonical" href="https://avsuja.github.io/ordinary-to-legendary/jupyter/pytorch/neuralnetwork/convolutionalneuralnetwork/2021/01/04/digit-recognition-pytorch.html" />
+<meta property="og:url" content="https://avsuja.github.io/ordinary-to-legendary/jupyter/pytorch/neuralnetwork/convolutionalneuralnetwork/2021/01/04/digit-recognition-pytorch.html" />
+<meta property="og:site_name" content="Ordinary to Legendary" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-04T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://avsuja.github.io/ordinary-to-legendary/jupyter/pytorch/neuralnetwork/convolutionalneuralnetwork/2021/01/04/digit-recognition-pytorch.html","@type":"BlogPosting","headline":"Digit Recognition - using NN and CNN (Pytorch)","dateModified":"2021-01-04T00:00:00-06:00","datePublished":"2021-01-04T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://avsuja.github.io/ordinary-to-legendary/jupyter/pytorch/neuralnetwork/convolutionalneuralnetwork/2021/01/04/digit-recognition-pytorch.html"},"author":{"@type":"Person","name":"Venkataramani, Suja"},"description":"Classify digit images using Neural Network and Convolutional Neural Network.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/ordinary-to-legendary/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://avsuja.github.io/ordinary-to-legendary/feed.xml" title="Ordinary to Legendary" /><link rel="shortcut icon" type="image/x-icon" href="/ordinary-to-legendary/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/ordinary-to-legendary/">Ordinary to Legendary</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/ordinary-to-legendary/about/">About Me</a><a class="page-link" href="/ordinary-to-legendary/search/">Search</a><a class="page-link" href="/ordinary-to-legendary/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Digit Recognition - using NN and CNN (Pytorch)</h1><p class="page-description">Classify digit images using Neural Network and Convolutional Neural Network.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-04T00:00:00-06:00" itemprop="datePublished">
+        Jan 4, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Venkataramani, Suja</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      13 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/ordinary-to-legendary/categories/#jupyter">jupyter</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/ordinary-to-legendary/categories/#pytorch">pytorch</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/ordinary-to-legendary/categories/#neuralnetwork">neuralnetwork</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/ordinary-to-legendary/categories/#convolutionalneuralnetwork">convolutionalneuralnetwork</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/avsuja/ordinary-to-legendary/tree/master/_notebooks/2021-01-04-digit-recognition-pytorch.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/avsuja/ordinary-to-legendary/master?filepath=_notebooks%2F2021-01-04-digit-recognition-pytorch.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/avsuja/ordinary-to-legendary/blob/master/_notebooks/2021-01-04-digit-recognition-pytorch.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ordinary-to-legendary/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-04-digit-recognition-pytorch.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Overview">Overview<a class="anchor-link" href="#Overview"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Method">Method<a class="anchor-link" href="#Method"> </a></h2><p>We use MINST dataset which is a dataset of handwritten digits black and white images which have been centred,  normalised to a standard size of 28 X 28 pixels.</p>
+<p>PyTorch is deeplearning framework based on Torch, developed by Facebook. Tensorflow is another such framework developed by Google. Keras a is wrapper framework for Tensorflow with simpler interface more suitable for smaller datasets. for a comparison between these frameworks, read <a href="https://towardsdatascience.com/keras-vs-pytorch-for-deep-learning-a013cb63870d">this</a>.</p>
+<p>In this blog we will use PyTorch to build our deep learning models. Let's install the cpu version using:</p>
+<p>pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio===0.7.2 -f <a href="https://download.pytorch.org/whl/torch_stable.html">https://download.pytorch.org/whl/torch_stable.html</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span><span class="p">,</span> <span class="n">optim</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Linear</span><span class="p">,</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">Conv2d</span><span class="p">,</span> <span class="n">MaxPool2d</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-a-tensor?">What is a tensor?<a class="anchor-link" href="#What-is-a-tensor?"> </a></h3><p>Tensor is a n-dimentional array data structure used to store numbers with which mathmematical operations can be performed for machine learning. In Pytorch Tensors are build on GPUs which makes tensor computations such as slicing, mathematical operations extremely efficient.</p>
+<p><a href="https://www.datacamp.com/community/tutorials/investigating-tensors-pytorch">DataCamp</a></p>
+<p>Input to the neural network in the form of a tensor. Normally images are in the format (H, W, C), these will need to be first converted into a tensor of the format (B, C, H, W) where 
+    B = Number of Images (batch)<br />
+    C = number of colour channels (Black and white = 1, colour = 3)<br />
+    H = Height of the image<br />
+    W = Width of the image</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># ToTensor converts a numpy image array of (H, W, C) in the range (0, 255) in to a tensor of (C, H, W) in the range (0, 1)</span>
+
+<span class="c1"># Normalize method accepts mean and std deviation as input. For every channel performs (image - mean)/std. this arranges all the numbers of the channel within the same range and reduces the skews in input data dute to different ranges of numbers.</span>
+<span class="n">transform_step</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,))])</span>
+
+<span class="c1"># TorchVision.datasets has the most commonly used deep learning datasets available for easy download. All datasets have common interface of tranform. train=True gets the training data (60,000 samples), train=False gets test data (10,00 samples).</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;./data/mmist_train&#39;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform_step</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;./data/minst_test&#39;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform_step</span><span class="p">)</span>
+
+<span class="c1"># DataLoader creates a iterable batches of data in order to aid with training a nn model. Setting shuffle to True results in a random suffled batch of images.</span>
+<span class="n">train_data_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_data_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">train_data_loader</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Before squeeze&quot;</span><span class="p">,</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After squeeze&quot;</span><span class="p">,</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">());</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">());</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">());</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">());</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Deep-Neural-Network">Deep Neural Network<a class="anchor-link" href="#Deep-Neural-Network"> </a></h3><p>Deep neural network is a stacked set of nodes with more than one layer between the input and output. Suppose we have a multiple linear regression porblem to solve:</p>
+<p>y = a + bx1 + cx2</p>
+<p>where x1 and x2 are the inputs, a is the bias, y is the expected value and b and c are the co-efficients we are trying to learn from the machine learning model.</p>
+<p>At the beginning, b and c - also called a weights are assigned random values. The inputs are passed to a node, a bias is assinged which is unrelated to the inputs x1 and x2. The values are combined and passed to an activation function - which decides if the output. The predicted y is then compared with the expected y and the error is calculated.</p>
+<p>In a feed-forward netowrk, the error is sent all the way to the initial weights assingment, the weights are adjusted based on the error and it goes for a second round through the network. Every pass through the network continuously improves the result, such that the error reduces with every pass.</p>
+<p>Deep neural networks are particularly useful when the input data has a large dimension, the features will need to be learnt but the model (automatic feature extraction) rather than being input - such a image recognition. The lower layers learn the low level features. As it advances through the node stack, each layer learns higher level features based on the output of the previous layer.</p>
+<h4 id="Activation-Functions">Activation Functions<a class="anchor-link" href="#Activation-Functions"> </a></h4><p>Activation functions decide which of the inputs most influence the model output, they normalize the input to be between (0, 1) or (-1, 1). Three main types are:</p>
+<p>Binary Step Function:<br />
+Given threshold - returns 0 for values below threshold, and 1 for greater than equal to threshold.</p>
+<p>Linear Activation Fucntion:<br />
+Linearly dependent on input.</p>
+<p>Non-linear Activation Function:<br />
+Sigmoid (smooth curve)<br />
+Hyperbolic (Curve  centred around 0)
+ReLU (Rectified Linear Unit) - similary to linear but has derivative function which helps with back propogation.<br />
+Leaky ReLU - Has a small positive slope for negative values<br />
+Parametric ReLU - 
+Softmax - Can give multi-class output, where the value is assigned a probability of belonging to the classes. Used in the final layer of the stack to assign the class.<br />
+Swish - Self gated activation function</p>
+<p>Bias can be considered equivalent to the intercept of a linear equation. It determines the threshold over which a activation function triggers. Weights determine how fast the activation function triggers.</p>
+<p><a href="https://wiki.pathmind.com/neural-network">PathMind</a><br />
+<a href="https://missinglink.ai/guides/neural-network-concepts/7-types-neural-network-activation-functions-right/">MissingLink</a><br />
+<a href="https://www.geeksforgeeks.org/effect-of-bias-in-neural-network/#:~:text=On%20the%20other%20hand%20Bias,best%20for%20the%20given%20data.">GeeksForGeeks</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 28 * 28</span>
+<span class="n">input_size</span> <span class="o">=</span> <span class="mi">784</span>
+<span class="c1"># First layer has 128 neurons, second layer has 64 neurons</span>
+<span class="n">hidden_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span>
+<span class="c1"># Digits 0 - 9</span>
+<span class="n">output_size</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Sequential functions stacks the layers one after another in the order given. LogSoftMax parameter dim=1 is the dimension along which LogSoftMax will be calculated.</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                      <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                      <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
+                      <span class="n">hidden_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                      <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                      <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="n">output_size</span><span class="p">),</span>
+                      <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Sequential(
+  (0): Linear(in_features=784, out_features=128, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=128, out_features=64, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=64, out_features=10, bias=True)
+  (5): LogSoftmax(dim=1)
+)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Why-do-we-use-log-functions-in-Machine-Learning?">Why do we use log functions in Machine Learning?<a class="anchor-link" href="#Why-do-we-use-log-functions-in-Machine-Learning?"> </a></h3><p>When the input values have  high range of values - very small to very high values, we call this range skewed. When performing mathematical operations on the extreme values it will either underflow or overflow when computing.</p>
+<p>In maths, log is the inverse function for power. So when dealing with very high or low powered values, we can minimise the effect of the powers by applying log because:</p>
+<p>e^a.e^b = e^(a+b)</p>
+<p>log(a.b) = log(a) + log(b)</p>
+<p>So instead of mutiplying numbers which lead to very big /very low numbers, we dampen the effect of the powers by using log sums.</p>
+<p><a href="https://blog.feedly.com/tricks-of-the-trade-logsumexp/">Feedly</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-a-Criterion?">What is a Criterion?<a class="anchor-link" href="#What-is-a-Criterion?"> </a></h3><p>Machine Learning model needs to measure loss after every epoch to so that the weights can be adjusted to reduce this loss for the next epoch. Criterion is the loss function is used to calculate the gradient loss. There are several loss functions:</p>
+<p>AbsCriterion (Absolute Error): loss(x,y) = sum(xi - yi)/n<br />
+MSECriterion (Mean Squared Error): loss(x,y) = (sum(xi - yi)^2)/n<br />
+NLLLoss (Negative Log Likelihood): loss(y) = -log(y) - summed for all correct classes. Higher the log probability assigned to the right class, more correct the model</p>
+<p><a href="https://ljvmiranda921.github.io/notebook/2017/08/13/softmax-and-the-negative-log-likelihood/">GitHub</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-an-Optimiser?">What is an Optimiser?<a class="anchor-link" href="#What-is-an-Optimiser?"> </a></h3><p>Optimiser is an algorithm which adjusts the weights and learning rates of the machine learning model in order to reduce loss. Some of the popular ones are:</p>
+<p>Gradient Descent: Calculates derivative of the loss function for the entire dataset before weights can be adjusted. 
+Stochastic Gradient Descent (SGD): Calculates derivative one sample at a time.<br />
+Minibatch Gradient Descent: Calculates derivative of loss after every batch.<br />
+Adaptive Moment Estimation (ADAM): Gradual change of velocity based on past gradients.</p>
+<p><a href="https://towardsdatascience.com/optimizers-for-training-neural-network-59450d71caf6#:~:text=Optimizers%20are%20algorithms%20or%20methods,help%20to%20get%20results%20faster">TowardsDataScience</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Parameter-vs-Hyperparameter">Parameter vs Hyperparameter<a class="anchor-link" href="#Parameter-vs-Hyperparameter"> </a></h3><p>In machine learning, parameters are the co-efficients of the equation we are trying to learn from the model. These are calculated by the model and not given as input to the model.</p>
+<p>Hyperparameters are the type of inputs given by the user to train the model such that it achieves the best parameter values. For eg. learning rate, momumtum, number of epochs, batch size, etc.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-Learning?">What is Learning?<a class="anchor-link" href="#What-is-Learning?"> </a></h3><p>Learning rate is a hyperparameter which determines the rate at which the weights are adjusted - value is set between 0 and 1. Ideally, the model must learn the best weights without getting stuck in a local minima but at the same time finding the best possible values with the lowest loss.</p>
+<p>Instead of learning rate remaining the same across all epochs they could be made to vary across epochs. Decaying learning rate is one such technique where the learning rate drops steadily as the model advances through the epochs. Scheduled learning rate drops the rate every few epochs. Adaptive learning rate is a technique where the the rate increases and decreases proportional to the value of the gradient descent.</p>
+<p><a href="https://www.mygreatlearning.com/blog/understanding-learning-rate-in-machine-learning/">MyGreatLearning</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-Momentum?">What is Momentum?<a class="anchor-link" href="#What-is-Momentum?"> </a></h3><p>In SGD, the loss is determined after every sample. When the sample is noisy, the steps taken to achieve the optimum weights can vary randomly depending on next sample. Momentum is hyperparameter which retains some portion of the learning from the past in taking next step - value between 0 and 1. Momentum is an attempt to smooth the direction of descent, a moving average of gradients which helps avoid local minima and help moving in the direction of the lowest cost for the model without getting stuck in local fluctuations.</p>
+<p><a href="https://towardsdatascience.com/stochastic-gradient-descent-with-momentum-a84097641a5d">https://towardsdatascience.com/stochastic-gradient-descent-with-momentum-a84097641a5d</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set the criterion = Negative Log Probability.</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+<span class="c1"># Set the optmiser as Stochastic Gradient Descent with learning rate of 0.001 and momentum of 0.9.</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="c1"># The number of complete passes of the entire training dataset.</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="c1"># Loads 32 random images at a time, this is a mini-batch SGD. Multiple passes over the same dataset helps learn the the co-efficients with          the lowest cost. </span>
+    <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_data_loader</span><span class="p">:</span>
+        <span class="c1"># tensor.view reshapes the view into a new matrix. -1 means calculate this value based on the other values given such that the count                matches. [32, 1, 28, 28] changes to [32, 784]</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Start by initializing with 0 gradients for all the parameters.</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="c1"># Logsoftmax returns log probabilities - forward pass.</span>
+        <span class="n">log_prob</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+        <span class="c1"># Calculate the loss by comparing the predicted labels with the actual labels using NLL loss.</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">log_prob</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="c1"># Computes the loss gradient for each each parameter and stores it - backward pass.</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="c1"># Updates the value of of the co-efficient for all parameters with the corresponding gradient - taking into account learning rate and               momentum.</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>               
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">correct_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">test_data_loader</span><span class="p">:</span>
+    <span class="c1"># Pick one image at a time.</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># De-activates autograd (gradient calculation).</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">log_prob</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="c1"># Exponential operation is the inverse of log. </span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_prob</span><span class="p">)</span>
+        <span class="c1"># Convert the tensor into numpy, convert into list.</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># Find the index of the list with the highest probablity, the index order is the order of the digits [0-9].</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">prob</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">label</span> <span class="o">==</span> <span class="n">pred_label</span><span class="p">):</span>
+            <span class="n">correct_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">correct_count</span><span class="o">/</span><span class="n">count</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>96.57
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="CNN">CNN<a class="anchor-link" href="#CNN"> </a></h2><p>Convolutional Neural Network is a variant of neural network which involves a convolutional layer in the stack. CNN is good a reducing the dimentionality of the input without losing the features. Convolutional layer involves applying a kernel function (a matrix of numbers) over the input and adding the values. This extracts the high level features. This is usually followed by a max pooling layer - either max or average pooling where the maximum value of a matrix is taken to the next level - the idea being the noise is left behind and only the key features are extracted. Finally the data is passed on to a fully connected neural network and SoftMax for class prediction.</p>
+<p><a href="https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53">TowardsDataScience</a><br />
+<a href="https://www.jeremyjordan.me/convnet-architectures/">Jeremyjordan</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="c1"># Constructor which first calls the base class constructor.</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cnn_layers</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span>
+            <span class="c1"># in_channels: black and white = 1, colour image = 3, out_channels: number of features to learn, kernel_size = size of the matrix,                  stride = number of pixels to jump when applying kernel, paddint = number of pixels to add around the image.</span>
+            <span class="c1"># conv2d is used of images, conv3d for videos.</span>
+            <span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="c1"># Does the operation in place, can save memory, but original image is lost.</span>
+            <span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="c1"># Applies max pooling over a matrix of 2 x 2, jumps of 2.</span>
+            <span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">ReLU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Final fully connected layer.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_layers</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span>
+            <span class="c1"># Input and output.</span>
+            <span class="n">Linear</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnn_layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cnn_model</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
+
+<span class="n">cnn_model</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Net(
+  (cnn_layers): Sequential(
+    (0): Conv2d(1, 4, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU(inplace=True)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(4, 4, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (4): ReLU(inplace=True)
+    (5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (linear_layers): Sequential(
+    (0): Linear(in_features=196, out_features=10, bias=True)
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cnn_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">cnn_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_data_loader</span><span class="p">:</span>
+        <span class="c1"># images = images.view(images.shape[0], -1)</span>
+        
+        <span class="n">cnn_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="c1"># Forward.</span>
+        <span class="n">log_prob</span> <span class="o">=</span> <span class="n">cnn_model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">log_prob</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="c1"># Backward.</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="c1"># Optimize.</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">correct_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">test_data_loader</span><span class="p">:</span>
+    <span class="c1"># 32 images and labels.</span>
+    <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="c1"># Get the predictions.</span>
+    <span class="c1"># 32 outputs with log probabilities of 10 each for each of the 10 digits.</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">cnn_model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+
+    <span class="c1"># torch.max - with dim=1 (column) results in max of the probablilities for each of 32 images. It returns 2 values - max probabliltiy and            max index, we are interested in the max index. _, is used to ignore the first set of output.</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of images - 32 in each batch except for the last batch.</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of correct guesses in this batch.</span>
+    <span class="n">correct_count</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">correct_count</span><span class="o">/</span><span class="n">count</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>9.39
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion"> </a></h2><p>In this example we learnt how to build a simple neural network and CNN. We also found that the performance with a simple neural network was <em>96.57%</em> while the same data with CNN was <em>9.39%</em>. In the next blog let us find out how to make CNN more accurate.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/ordinary-to-legendary/jupyter/pytorch/neuralnetwork/convolutionalneuralnetwork/2021/01/04/digit-recognition-pytorch.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/ordinary-to-legendary/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/ordinary-to-legendary/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Data science projects with Jupiter notebooks and blogs - gaining confidence by building and writing.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/ordinary-to-legendary/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
