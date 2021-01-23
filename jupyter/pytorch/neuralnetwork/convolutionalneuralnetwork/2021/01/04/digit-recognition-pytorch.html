@@ -167,6 +167,7 @@ window.onload = wrap_img;
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span><span class="p">,</span> <span class="n">optim</span>
 <span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Linear</span><span class="p">,</span> <span class="n">ReLU</span><span class="p">,</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">Conv2d</span><span class="p">,</span> <span class="n">MaxPool2d</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">func</span>
 </pre></div>
 
     </div>
@@ -573,7 +574,7 @@ Adaptive Moment Estimation (ADAM): Gradual change of velocity based on past grad
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnn_layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_layers</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="n">func</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -583,6 +584,54 @@ Adaptive Moment Estimation (ADAM): Gradual change of velocity based on past grad
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="How-is-the-input-and-output-size-calculated?">How is the input and output size calculated?<a class="anchor-link" href="#How-is-the-input-and-output-size-calculated?"> </a></h3><p>(inputsize - (filtersize - 1))</p>
+<table>
+<thead><tr>
+<th>Layer</th>
+<th>Output size</th>
+<th>Image </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>input</td>
+<td>1 x 28 x 28</td>
+<td>28 x 28 input image size  </td>
+</tr>
+<tr>
+<td>conv2d-1 (1, 4, 5)</td>
+<td>4 x 24 x 24</td>
+<td>(28 - (5 - 1)) = <code>24</code>  </td>
+</tr>
+<tr>
+<td>maxpool2d-1 (2)</td>
+<td>4 x 12 x 12</td>
+<td>24/2 = <code>12</code>  </td>
+</tr>
+<tr>
+<td>conv2d-2 (4, 4, 5)</td>
+<td>4 x 8 x 8</td>
+<td>(12 - (5 - 1)) = <code>8</code>  </td>
+</tr>
+<tr>
+<td>maxpool2d-2 (2)</td>
+<td>4 x 4 x 4</td>
+<td>8/2 = <code>4</code>  </td>
+</tr>
+<tr>
+<td>fc1 ()</td>
+<td>10</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://stackoverflow.com/questions/42786717/how-to-calculate-the-number-of-parameters-for-convolutional-neural-network/42787467">StackOverflow</a></p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -637,7 +686,8 @@ Adaptive Moment Estimation (ADAM): Gradual change of velocity based on past grad
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cnn_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">cnn_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cnn_criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+<span class="n">cnn_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">cnn_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
@@ -647,11 +697,11 @@ Adaptive Moment Estimation (ADAM): Gradual change of velocity based on past grad
         <span class="n">cnn_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="c1"># Forward.</span>
         <span class="n">log_prob</span> <span class="o">=</span> <span class="n">cnn_model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">log_prob</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">cnn_criterion</span><span class="p">(</span><span class="n">log_prob</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
         <span class="c1"># Backward.</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="c1"># Optimize.</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">cnn_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -718,7 +768,7 @@ Adaptive Moment Estimation (ADAM): Gradual change of velocity based on past grad
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>9.39
+<pre>97.44
 </pre>
 </div>
 </div>
