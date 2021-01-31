@@ -138,7 +138,8 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Overview">Overview<a class="anchor-link" href="#Overview"> </a></h2>
+<h2 id="Overview">Overview<a class="anchor-link" href="#Overview"> </a></h2><p>In this post, we will get to grips with neural network. We will use a neural network to classify handwritten digits from MINST dataset. We will then build a CNN and try out the same dataset. Along the way we will learn several concepts such a tensor, activation function and how to use loss function and the selection of hyperparameter such a learning rate and momentum.</p>
+
 </div>
 </div>
 </div>
@@ -403,7 +404,7 @@ Adaptive Moment Estimation (ADAM): Gradual change of velocity based on past grad
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="What-is-Learning?">What is Learning?<a class="anchor-link" href="#What-is-Learning?"> </a></h3><p>Learning rate is a hyperparameter which determines the rate at which the weights are adjusted - value is set between 0 and 1. Ideally, the model must learn the best weights without getting stuck in a local minima but at the same time finding the best possible values with the lowest loss.</p>
+<h3 id="What-is-Learning-Rate?">What is Learning Rate?<a class="anchor-link" href="#What-is-Learning-Rate?"> </a></h3><p>Learning rate is a hyperparameter which determines the rate at which the weights are adjusted - value is set between 0 and 1. Ideally, the model must learn the best weights without getting stuck in a local minima but at the same time finding the best possible values with the lowest loss.</p>
 <p>Instead of learning rate remaining the same across all epochs they could be made to vary across epochs. Decaying learning rate is one such technique where the learning rate drops steadily as the model advances through the epochs. Scheduled learning rate drops the rate every few epochs. Adaptive learning rate is a technique where the the rate increases and decreases proportional to the value of the gradient descent.</p>
 <p><a href="https://www.mygreatlearning.com/blog/understanding-learning-rate-in-machine-learning/">MyGreatLearning</a></p>
 
