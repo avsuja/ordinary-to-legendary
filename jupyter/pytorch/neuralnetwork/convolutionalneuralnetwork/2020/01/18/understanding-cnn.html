@@ -432,6 +432,11 @@ window.onload = wrap_img;
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cnn_layers</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">(</span>
             <span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+            <span class="c1"># num_features - (N-size of batch, C-num_features, Height, Width)</span>
+            <span class="c1"># eps - epsilon, added for numerical stability</span>
+            <span class="c1"># momentum - nunning mean compuation</span>
+            <span class="c1"># affine - preserved collinearity</span>
+            <span class="c1"># track_running_stats - store mean and variance</span>
             <span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">track_running_stats</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
             <span class="n">ReLU</span><span class="p">(),</span>
             <span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
