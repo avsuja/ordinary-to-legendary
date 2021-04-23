@@ -180,7 +180,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="What-is-a-tensor?">What is a tensor?<a class="anchor-link" href="#What-is-a-tensor?"> </a></h3><p>Tensor is a n-dimentional array data structure used to store numbers with which mathmematical operations can be performed for machine learning. In Pytorch Tensors are build on GPUs which makes tensor computations such as slicing, mathematical operations extremely efficient.</p>
+<h3 id="What-is-a-tensor?">What is a tensor?<a class="anchor-link" href="#What-is-a-tensor?"> </a></h3><p>Tensor is a n-dimentional array data structure used to store numbers with which mathmematical operations can be performed for machine learning. In Pytorch Tensors are build on GPUs which makes tensor computations such as slicing and mathematical operations extremely efficient.</p>
 <p><a href="https://www.datacamp.com/community/tutorials/investigating-tensors-pytorch">DataCamp</a></p>
 <p>Input to the neural network in the form of a tensor. Normally images are in the format (H, W, C), these will need to be first converted into a tensor of the format (B, C, H, W) where 
     B = Number of Images (batch)<br />
@@ -281,9 +281,9 @@ window.onload = wrap_img;
 <h3 id="Deep-Neural-Network">Deep Neural Network<a class="anchor-link" href="#Deep-Neural-Network"> </a></h3><p>Deep neural network is a stacked set of nodes with more than one layer between the input and output. Suppose we have a multiple linear regression porblem to solve:</p>
 <p>y = a + bx1 + cx2</p>
 <p>where x1 and x2 are the inputs, a is the bias, y is the expected value and b and c are the co-efficients we are trying to learn from the machine learning model.</p>
-<p>At the beginning, b and c - also called a weights are assigned random values. The inputs are passed to a node, a bias is assinged which is unrelated to the inputs x1 and x2. The values are combined and passed to an activation function - which decides if the output. The predicted y is then compared with the expected y and the error is calculated.</p>
-<p>In a feed-forward netowrk, the error is sent all the way to the initial weights assingment, the weights are adjusted based on the error and it goes for a second round through the network. Every pass through the network continuously improves the result, such that the error reduces with every pass.</p>
-<p>Deep neural networks are particularly useful when the input data has a large dimension, the features will need to be learnt but the model (automatic feature extraction) rather than being input - such a image recognition. The lower layers learn the low level features. As it advances through the node stack, each layer learns higher level features based on the output of the previous layer.</p>
+<p>At the beginning, b and c - also called a weights are assigned random values. The inputs are passed to a node, a bias is assinged which is unrelated to the inputs x1 and x2. The values are combined and passed to an activation function - which decides the output. The predicted y is then compared with the expected y and the error is calculated.</p>
+<p>In a feed-forward network, the error is sent all the way to the initial weights assingment, the weights are adjusted based on the error and it goes for a second round through the network. Every pass through the network continuously improves the result, such that the error reduces with every pass.</p>
+<p>Deep neural networks are particularly useful when the input data has a large dimension, the features will need to be learnt by the model (automatic feature extraction) rather than being input - such a image recognition. The lower layers learn the low level features. As it advances through the node stack, each layer learns higher level features based on the output of the previous layer.</p>
 <h4 id="Activation-Functions">Activation Functions<a class="anchor-link" href="#Activation-Functions"> </a></h4><p>Activation functions decide which of the inputs most influence the model output, they normalize the input to be between (0, 1) or (-1, 1). Three main types are:</p>
 <p>Binary Step Function:<br />
 Given threshold - returns 0 for values below threshold, and 1 for greater than equal to threshold.</p>
@@ -361,7 +361,7 @@ Swish - Self gated activation function</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Why-do-we-use-log-functions-in-Machine-Learning?">Why do we use log functions in Machine Learning?<a class="anchor-link" href="#Why-do-we-use-log-functions-in-Machine-Learning?"> </a></h3><p>When the input values have  high range of values - very small to very high values, we call this range skewed. When performing mathematical operations on the extreme values it will either underflow or overflow when computing.</p>
+<h3 id="Why-do-we-use-log-functions-in-Machine-Learning?">Why do we use log functions in Machine Learning?<a class="anchor-link" href="#Why-do-we-use-log-functions-in-Machine-Learning?"> </a></h3><p>When the input values have  high range of values - very small to very high values, we call this range skewed. When performing mathematical operations on the extreme values it will either underflow or overflow.</p>
 <p>In maths, log is the inverse function for power. So when dealing with very high or low powered values, we can minimise the effect of the powers by applying log because:</p>
 <p>e^a.e^b = e^(a+b)</p>
 <p>log(a.b) = log(a) + log(b)</p>

@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://avsuja.github.io/ordinary-to-legendary/jupyter/pytorch/neuralnetwork/convolutionalneuralnetwork/2020/01/18/understanding-cnn.html</loc>
-<lastmod>2020-01-18T00:00:00-06:00</lastmod>
-</url>
-<url>
 <loc>https://avsuja.github.io/ordinary-to-legendary/jupyter/2020/12/30/but-first.html</loc>
 <lastmod>2020-12-30T00:00:00-06:00</lastmod>
 </url>
 <url>
-<loc>https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/tfidfvectorizer/passiveaggresiveclassifier/logisticregressionclassifier/supportvectorclassifier/naivebayesclassifier/decisiontreeclassifier/randomforestclassifier/mlpclassifier/2020/12/30/fake-news-detection.html</loc>
+<loc>https://avsuja.github.io/ordinary-to-legendary/2020/12/30/fake-news-detection.html</loc>
 <lastmod>2020-12-30T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/xgboost/2021/01/01/parkinsons-xgboost-copy.html</loc>
-<lastmod>2021-01-01T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/xgboost/2021/01/01/parkinsons-xgboost.html</loc>
@@ -35,6 +27,10 @@
 <url>
 <loc>https://avsuja.github.io/ordinary-to-legendary/jupyter/python/2021/02/10/python-deep-dive.html</loc>
 <lastmod>2021-02-10T00:00:00-06:00</lastmod>
+</url>
+<url>
+<loc>https://avsuja.github.io/ordinary-to-legendary/jupyter/sklearn/tfidfvectorizer/passiveaggresiveclassifier/logisticregressionclassifier/supportvectorclassifier/naivebayesclassifier/decisiontreeclassifier/randomforestclassifier/mlpclassifier/2021/03/02/credit-card-fraud-detection.html</loc>
+<lastmod>2021-03-02T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>https://avsuja.github.io/ordinary-to-legendary/about/</loc>
